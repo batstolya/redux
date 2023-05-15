@@ -14,7 +14,15 @@ type ClearAction = {
     type: 'car/CLEAR';
 };
 
-type Action = AddAction | TakeAction | ClearAction;
+type Test = {
+    type: 'car/TEST';
+    payload: Car;
+    field: string;
+    fieldValue: string;
+};
+
+
+type Action = AddAction | TakeAction | ClearAction | Test;
 
 const add = (value: Car): AddAction => ({
     type: 'car/ADD',
@@ -30,7 +38,14 @@ const clear = (): ClearAction => ({
     type: 'car/CLEAR',
 });
 
-export const actions = { add, take, clear };
+const test = (value: Car, field: string, fieldValue: any): Test => ({
+    type: 'car/TEST',
+    payload: value,
+    field: field,
+    fieldValue: fieldValue,
+});
+
+export const actions = { add, take, clear, test };
 
 const carsReducer = (cars: Car[] = [], action: Action) => {
     switch (action.type) {
@@ -40,7 +55,17 @@ const carsReducer = (cars: Car[] = [], action: Action) => {
             return cars.filter(car => car.id !== action.payload.id)
         case "car/CLEAR":
             return [];
+        case "car/TEST":
+            const index = cars.findIndex(car => car.id === action.payload.id);
+            const updateCar = {
+                ...action.payload,
+                [action.field]: action.fieldValue
+            }
 
+            cars[index] = updateCar;
+            return [...cars]
+
+        
         default:
             return cars;
     }

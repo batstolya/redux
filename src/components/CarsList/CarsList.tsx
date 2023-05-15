@@ -1,8 +1,8 @@
 import React from "react";
 
 import { Car } from "../../types/Car";
-import { CarCard } from "../CarCard/CarCard";
 import "./CarsList.scss";
+import { CarCard } from "../CarCard";
 
 
 interface Props {
